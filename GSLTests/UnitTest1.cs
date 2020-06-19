@@ -1,5 +1,6 @@
 using GeminiSharpLib;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace GSLTests
 {
