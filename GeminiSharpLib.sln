@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeminiSharpLib", "GeminiSharpLib\GeminiSharpLib.csproj", "{D197BD71-3DAD-4B50-A6D5-248785C77786}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSLTests", "GSLTests\GSLTests.csproj", "{CF3AA934-8A25-4308-95D4-9914ADE562BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D197BD71-3DAD-4B50-A6D5-248785C77786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D197BD71-3DAD-4B50-A6D5-248785C77786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D197BD71-3DAD-4B50-A6D5-248785C77786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D197BD71-3DAD-4B50-A6D5-248785C77786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF3AA934-8A25-4308-95D4-9914ADE562BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF3AA934-8A25-4308-95D4-9914ADE562BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF3AA934-8A25-4308-95D4-9914ADE562BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF3AA934-8A25-4308-95D4-9914ADE562BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
