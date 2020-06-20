@@ -31,10 +31,10 @@ namespace GSLTests
             Dictionary<String, GeminiRouteHandler> routes = new Dictionary<string, GeminiRouteHandler>();
             routes.Add("foo", fooResponse);
             routes.Add("bar", barResponse);
-            while (true)
-            {
+            // while (true)
+            // {
                 listener.Listen(routes);   
-            }
+            // }
         }
     }
 }

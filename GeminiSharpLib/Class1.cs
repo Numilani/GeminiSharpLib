@@ -31,6 +31,7 @@ namespace GeminiSharpLib
         {
             _listener.Start();
             
+            Console.WriteLine("Listening...");
             TcpClient client = _listener.AcceptTcpClient();
 
             SslStream stream = new SslStream(client.GetStream());
@@ -40,17 +41,22 @@ namespace GeminiSharpLib
             {
                 byte[] request = new byte[1024];
                 stream.Read(request);
-                String uri = Encoding.UTF8.GetString(request).TrimEnd('\u0000');
-                
+                String uri = Encoding.UTF8.GetString(request).TrimEnd('\u0000').TrimEnd('\r', '\n');
+
                 List<String> path = new List<string>(uri.Split("/"));
                 path.RemoveRange(0,2);
-                
+
                 // TestResponse(stream);
-                // if (routeHandlers.ContainsKey(path[1]))
-                // {
-                    // Success(stream, routeHandlers[path[1]]);
-                    Success(stream);
-                // }
+                if (routeHandlers.ContainsKey(path[1]))
+                {
+                    Success(stream, routeHandlers[path[1]]);
+                    // Success(stream);
+                }
+                else
+                {
+                    Failure(stream);
+                    Console.WriteLine("no route for " + path[1] + "was found.");
+                }
 
                 stream.Close();
                 client.Close();
@@ -63,14 +69,21 @@ namespace GeminiSharpLib
             _listener.Stop();
         }
 
-        // private static void Success(SslStream stream, GeminiRouteHandler body)
-        private static void Success(SslStream stream)
+        private static void Success(SslStream stream, GeminiRouteHandler body)
+            // private static void Success(SslStream stream)
         {
             byte[] byteHeader = Encoding.UTF8.GetBytes("20 SUCCESS\r\n");
-            byte[] byteBody = Encoding.UTF8.GetBytes("This is a test\r\n");
+            byte[] byteBody = Encoding.UTF8.GetBytes(body());
 
             stream.Write(byteHeader, 0, byteHeader.Length);
             stream.Write(byteBody, 0, byteBody.Length);
+        }
+        
+        private static void Failure(SslStream stream)
+        {
+            byte[] byteHeader = Encoding.UTF8.GetBytes("50 PERMANENT FAILURE\r\n");
+            
+            stream.Write(byteHeader, 0, byteHeader.Length);
         }
     }
 }
