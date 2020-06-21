@@ -35,19 +35,7 @@ namespace GeminiSharpLib
 
             try
             {
-                byte[] request = new byte[1024];
-                stream.Read(request);
-                GeminiURI uri = new GeminiURI(Encoding.UTF8.GetString(request).TrimEnd('\u0000').TrimEnd('\r', '\n'));
-
-                if (routeHandlers.ContainsKey(uri.path))
-                {
-                    Success(stream, routeHandlers[uri.path]);
-                }
-                else
-                {
-                    Failure(stream, GeminiProtocols.GetHeader(StatusCode.NOT_FOUND));
-                    Console.WriteLine("no route for " + uri.path + " was found.");
-                }
+                HandleRequest(routeHandlers, stream);
 
                 stream.Close();
                 client.Close();
@@ -60,20 +48,33 @@ namespace GeminiSharpLib
             _listener.Stop();
         }
 
-        public static void Success(SslStream stream, ContentProviderDelegate bodyContent)
+        private static void HandleRequest(Dictionary<string, ContentProviderDelegate> routeHandlers, SslStream stream)
         {
-            byte[] header = GeminiProtocols.GetHeader(StatusCode.SUCCESS, "text/plain");
-            byte[] body = Encoding.UTF8.GetBytes(bodyContent());
+            byte[] request = new byte[1024];
+            stream.Read(request);
+            GeminiURI uri = new GeminiURI(Encoding.UTF8.GetString(request).TrimEnd('\u0000').TrimEnd('\r', '\n'));
 
-            stream.Write(header, 0, header.Length);
-            stream.Write(body, 0, body.Length);
+            if (routeHandlers.ContainsKey(uri.path))
+            {
+                DeliverContent(stream, routeHandlers[uri.path]);
+            }
+            else
+            {
+                stream.Write(GeminiProtocols.GetHeader(StatusCode.NOT_FOUND), 0,
+                    GeminiProtocols.GetHeader(StatusCode.NOT_FOUND).Length);
+                Console.WriteLine("no route for " + uri.path + " was found.");
+            }
         }
 
-        private static void Failure(SslStream stream, byte[] header)
+        public static void DeliverContent(SslStream stream, ContentProviderDelegate contentProvider)
         {
-            stream.Write(header, 0, header.Length);
+            RouteContent content = contentProvider();
+            
+            stream.Write(content.header, 0, content.header.Length);
+            if (content.hasBody)
+            {
+                stream.Write(content.body, 0, content.body.Length);   
+            }
         }
     }
-    
-    public delegate void RouteDelegate(SslStream stream);
 }

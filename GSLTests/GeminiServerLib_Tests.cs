@@ -33,8 +33,8 @@ namespace GSLTests
             GeminiListener listener = new GeminiListener(new X509Certificate("C:\\x509\\geminiserver.pfx"));
 
             Dictionary<String, ContentProviderDelegate> routes = new Dictionary<string, ContentProviderDelegate>();
-            routes.Add("/foo", delegate { return "foo"; });
-            routes.Add("/bar", delegate { return "bar"; });
+            routes.Add("/foo", delegate { return new RouteContent(StatusCode.SUCCESS, "SUCCESS", "Foo"); });
+            routes.Add("/bar", delegate { return new RouteContent(StatusCode.SUCCESS, "SUCCESS", "Bar"); });
             
             
             // while (true)

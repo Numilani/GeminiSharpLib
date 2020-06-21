@@ -28,7 +28,7 @@ namespace GeminiSharpLib
         CERT_UNAUTHORIZED = 61,
         CERT_INVALID = 62
     }
-    public class GeminiProtocols
+    public static class GeminiProtocols
     {
         public static byte[] GetHeader(StatusCode status, string meta = "")
         {
@@ -42,11 +42,23 @@ namespace GeminiSharpLib
         }
     }
 
-    public class GeminiRouteHandler
+    public class RouteContent
     {
-        public void getHeader()
+        public byte[] header { get; private set; }
+        public byte[] body { get; private set; }
+        public bool hasBody { get; private set; }
+
+        public RouteContent(StatusCode status, string meta = "")
         {
-            
+            hasBody = false;
+            header = GeminiProtocols.GetHeader(status, meta);
+        }
+
+        public RouteContent(StatusCode status, string meta, string bodyContent)
+        {
+            hasBody = true;
+            header = GeminiProtocols.GetHeader(status, meta);
+            body = Encoding.UTF8.GetBytes(bodyContent);
         }
     }
 
@@ -73,5 +85,5 @@ namespace GeminiSharpLib
             }
         }
     }
-    public delegate String ContentProviderDelegate();
+    public delegate RouteContent ContentProviderDelegate();
 }
