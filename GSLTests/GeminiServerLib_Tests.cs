@@ -20,11 +20,11 @@ namespace GSLTests
         [Test]
         public void test_Gemini0URI_Constructor()
         {
-            GeminiURI uri = new GeminiURI("gemini://localhost:1965/foo/abc.xyz?id=bar&stuff=baz");
+            GeminiUri uri = new GeminiUri("gemini://localhost:1965/foo/abc.xyz?id=bar&stuff=baz");
             
-            Assert.AreEqual(uri.host, "gemini://localhost");
-            Assert.AreEqual(uri.path, "/foo/abc.xyz");
-            Assert.AreEqual(uri.query, "id=bar&stuff=baz");
+            Assert.AreEqual(uri.Host, "gemini://localhost");
+            Assert.AreEqual(uri.Path, "/foo/abc.xyz");
+            Assert.AreEqual(uri.Query, "id=bar&stuff=baz");
         }
 
         [Test]

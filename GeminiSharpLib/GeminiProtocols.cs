@@ -44,44 +44,44 @@ namespace GeminiSharpLib
 
     public class RouteContent
     {
-        public byte[] header { get; private set; }
-        public byte[] body { get; private set; }
-        public bool hasBody { get; private set; }
+        public byte[] Header { get; private set; }
+        public byte[] Body { get; private set; }
+        public bool HasBody { get; private set; }
 
         public RouteContent(StatusCode status, string meta = "")
         {
-            hasBody = false;
-            header = GeminiProtocols.GetHeader(status, meta);
+            HasBody = false;
+            Header = GeminiProtocols.GetHeader(status, meta);
         }
 
         public RouteContent(StatusCode status, string meta, string bodyContent)
         {
-            hasBody = true;
-            header = GeminiProtocols.GetHeader(status, meta);
-            body = Encoding.UTF8.GetBytes(bodyContent);
+            HasBody = true;
+            Header = GeminiProtocols.GetHeader(status, meta);
+            Body = Encoding.UTF8.GetBytes(bodyContent);
         }
     }
 
-    public class GeminiURI
+    public class GeminiUri
     {
-        public string host { get; private set; }
-        public string path { get; private set; }
-        public string query { get; private set; }
-        public List<string> parameters = new List<string>();
+        public string Host { get; private set; }
+        public string Path { get; private set; }
+        public string Query { get; private set; }
+        public List<string> Parameters = new List<string>();
         
-        public GeminiURI(String uri)
+        public GeminiUri(String uri)
         {
             if (uri.Contains("?"))
             {
                 //TODO: the port probably should not be hardcoded.
-                host = uri.Split(":1965")[0];
-                path = uri.Split(":1965")[1].Split("?")[0];
-                query = uri.Split(":1965")[1].Split("?")[1];
-                parameters = query.Split("&").ToList();
+                Host = uri.Split(":1965")[0];
+                Path = uri.Split(":1965")[1].Split("?")[0];
+                Query = uri.Split(":1965")[1].Split("?")[1];
+                Parameters = Query.Split("&").ToList();
             }
             else
             {
-                path = uri.Split(":1965")[1];
+                Path = uri.Split(":1965")[1];
             }
         }
     }

@@ -52,17 +52,17 @@ namespace GeminiSharpLib
         {
             byte[] request = new byte[1024];
             stream.Read(request);
-            GeminiURI uri = new GeminiURI(Encoding.UTF8.GetString(request).TrimEnd('\u0000').TrimEnd('\r', '\n'));
+            GeminiUri uri = new GeminiUri(Encoding.UTF8.GetString(request).TrimEnd('\u0000').TrimEnd('\r', '\n'));
 
-            if (routeHandlers.ContainsKey(uri.path))
+            if (routeHandlers.ContainsKey(uri.Path))
             {
-                DeliverContent(stream, routeHandlers[uri.path]);
+                DeliverContent(stream, routeHandlers[uri.Path]);
             }
             else
             {
                 stream.Write(GeminiProtocols.GetHeader(StatusCode.NOT_FOUND), 0,
                     GeminiProtocols.GetHeader(StatusCode.NOT_FOUND).Length);
-                Console.WriteLine("no route for " + uri.path + " was found.");
+                Console.WriteLine("no route for " + uri.Path + " was found.");
             }
         }
 
@@ -70,10 +70,10 @@ namespace GeminiSharpLib
         {
             RouteContent content = contentProvider();
             
-            stream.Write(content.header, 0, content.header.Length);
-            if (content.hasBody)
+            stream.Write(content.Header, 0, content.Header.Length);
+            if (content.HasBody)
             {
-                stream.Write(content.body, 0, content.body.Length);   
+                stream.Write(content.Body, 0, content.Body.Length);   
             }
         }
     }
